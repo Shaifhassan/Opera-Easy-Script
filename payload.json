@@ -68,28 +68,22 @@
     "Taxes": [
       {
         "No": 1,
-        "Group": "SVC",
         "Percent": 10,
         "Base": "B",
         "AddTo": "111"
       },
       {
         "No": 2,
-        "Group": "TAX",
         "Percent": 10,
         "Base": "S1",
         "AddTo": "111"
-      },
-      {
-        "No": 3,
-        "Code": "TX",
-        "Group": "TAX"
       }
     ],
     "Category": [
       {
         "Code": "RV",
         "Description": "Revenue",
+        "DefaultGroup": null,
         "Abbr": "",
         "Seq": 0,
         "IsRevenue": "Y",
@@ -104,6 +98,7 @@
       {
         "Code": "NR",
         "Description": "Non-Revenue",
+        "DefaultGroup": null,
         "Abbr": "",
         "Seq": 10,
         "IsRevenue": "N",
@@ -118,6 +113,7 @@
       {
         "Code": "DC",
         "Description": "Discounts",
+        "DefaultGroup": null,
         "Abbr": "[D]",
         "Seq": 20,
         "IsRevenue": "Y",
@@ -132,6 +128,7 @@
       {
         "Code": "RB",
         "Description": "Rebate",
+        "DefaultGroup": null,
         "Abbr": "[X]",
         "Seq": 40,
         "IsRevenue": "Y",
@@ -146,6 +143,7 @@
       {
         "Code": "SC",
         "Description": "Service Charge",
+        "DefaultGroup": "SVC",
         "Abbr": "",
         "Seq": 70,
         "IsRevenue": "N",
@@ -160,6 +158,7 @@
       {
         "Code": "TX",
         "Description": "GST",
+        "DefaultGroup": "TAX",
         "Abbr": "",
         "Seq": 80,
         "IsRevenue": "N",
@@ -174,6 +173,7 @@
       {
         "Code": "GT",
         "Description": "Green Tax",
+        "DefaultGroup": "TAX",
         "Abbr": "",
         "Seq": 88,
         "IsRevenue": "N",
@@ -188,6 +188,7 @@
       {
         "Code": "TP",
         "Description": "Tips",
+        "DefaultGroup": "OTH",
         "Abbr": "",
         "Seq": 90,
         "IsRevenue": "N",
@@ -202,6 +203,7 @@
       {
         "Code": "CA",
         "Description": "Cash",
+        "DefaultGroup": "PAY",
         "Abbr": "",
         "IsRevenue": "N",
         "IsManual": "Y",
@@ -215,6 +217,7 @@
       {
         "Code": "CL",
         "Description": "City Ledger",
+        "DefaultGroup": "PAY",
         "Abbr": "",
         "IsRevenue": "N",
         "IsManual": "Y",
@@ -228,6 +231,7 @@
       {
         "Code": "PD",
         "Description": "Paid Out",
+        "DefaultGroup": "OTH",
         "Abbr": "",
         "IsRevenue": "N",
         "IsManual": "Y",
@@ -241,6 +245,7 @@
       {
         "Code": "OP",
         "Description": "Other Payment",
+        "DefaultGroup": "PAY",
         "Abbr": "",
         "IsRevenue": "N",
         "IsManual": "Y",
@@ -254,6 +259,7 @@
       {
         "Code": "CC",
         "Description": "Credit Card",
+        "DefaultGroup": "PAY",
         "Abbr": "",
         "IsRevenue": "N",
         "IsManual": "Y",
@@ -271,8 +277,14 @@
       "Sequence": 10,
       "Name": "Accommodation",
       "Group": "ACC",
-      "Gen": ["SC", "TX"],
-      "Multiplier": ["RV", "RB", "GT", "TP"],
+      "Categories": [
+        { "Code": "SC", "Role": "generate" },
+        { "Code": "TX", "Role": "generate" },
+        { "Code": "RV", "Role": "multiply" },
+        { "Code": "RB", "Role": "multiply" },
+        { "Code": "GT", "Role": "other" },
+        { "Code": "TP", "Role": "other" }
+      ],
       "Identifier": [0],
       "Itemizers": [
         { "Itemizer": 0, "Description": "Revenue" },
@@ -286,8 +298,14 @@
       "Sequence": 20,
       "Name": "Celsius",
       "Group": "FNB",
-      "Gen": ["SC", "TX"],
-      "Multiplier": ["RV", "DC", "RB", "TP"],
+      "Categories": [
+        { "Code": "SC", "Role": "generate" },
+        { "Code": "TX", "Role": "generate" },
+        { "Code": "RV", "Role": "multiply" },
+        { "Code": "DC", "Role": "multiply" },
+        { "Code": "RB", "Role": "multiply" },
+        { "Code": "TP", "Role": "other" }
+      ],
       "Identifier": [1, 2, 3],
       "Itemizers": [
         { "Itemizer": 1, "Description": "Food" },
