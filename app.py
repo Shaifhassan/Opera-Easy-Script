@@ -14,65 +14,88 @@ SEQUENCES = content["Sequences"]
 SUBGROUPS = []
 TRXCODES = []
 
+def Get_Subgroup(sequence,groupCode, categoryCode):
+    _group = GROUPS[groupCode]
+    _cat = CATEGORIES[categoryCode]
+    _sequence = int(str(_cat["Seq"])[:1])
 
-for seq in SEQUENCES:
-    #print(seq)
-    _group = GROUPS[seq["Group"]]
-    _defCat = CATEGORIES[seq["Default"]]
-
-    #add main group for currenct sequence
     _subgroup = {
-        "Seq": f"{_group["Seq"]}{_defCat["Seq"]}",
-        "Code":f"{seq["Sequence"]}{_defCat["Code"]}", 
-        "Description":f"{seq["Name"]} {_defCat["Description"]}",
+        "Seq": int(f"{sequence}{_sequence}"),
+        "Code":f"{sequence}{_cat["Code"]}", 
+        "Description":f"{seq["Name"]} {_cat["Description"]}",
         "Group":_group["Code"],
         "Type":_group["Type"]
     }
+
+    return _subgroup
+
+def Create_TCode(sequence, groupCode,subGroupCode, CategoryCode, Identifier, Itemizer):
+    _group = GROUPS[groupCode]
+    _cat = CATEGORIES[CategoryCode]
+
+    _itemCode = Itemizer["Itemizer"] + _cat["Seq"]
+    _trxCodeNo = '{:02}'.format(_itemCode)
+    
+    _trxDescription = f'{sequence["Name"]}{f' {Identifier["Name"]}' if Identifier["Name"] else ''}{f' {Itemizer["Description"]}' if Itemizer["Description"] else ''}{f' {_cat["Abbr"]}' if _cat["Abbr"] else ''}'
+    
+    _trxCode = {
+        "Code" : f'{sequence["Sequence"]}{Identifier["Seq"]}{_trxCodeNo}',
+        "Description" : _trxDescription,
+        "SubGroup" : subGroupCode,
+        "Group" : groupCode,
+        "IsRevenue" : _cat["IsRevenue"],
+        "IsManual": _cat["IsManual"],
+        "IsCash": _cat["IsCash"],
+        "IsDeposit": _cat["IsDeposit"],
+        "IsAr": _cat["IsAr"],
+        "IsPaid": _cat["IsPaid"],
+        "Type" : _group["Type"]
+    }
+
+    return _trxCode
+
+for seq in SEQUENCES:
+    _itemizers = seq["Itemizers"]
+    _subgroup = Get_Subgroup(seq["Sequence"],seq["Group"], seq["Default"])
+    _identifiers = seq["Identifier"]
     SUBGROUPS.append(_subgroup)
-    print(_subgroup)
 
-    #add multplier group for currenct sequence
-    for category in seq["Mulitplier"]:
-        _cat = CATEGORIES[category]
-        _sequence = int(str(_cat["Seq"])[:1])
-        _subgroup = {
-            "Seq": f"{_group["Seq"]}{_sequence}",
-            "Code":f"{seq["Sequence"]}{_cat["Code"]}", 
-            "Description":f"{seq["Name"]} {_cat["Description"]}",
-            "Group":_group["Code"],
-            "Type":_group["Type"]
-        }
-        print(_subgroup)
+    #Generate Transaction Codes
+    for identifier in _identifiers:
+        _identifier = IDENTIFIER[identifier]
+        for itemizer in _itemizers:
+            #print(item)
+            _tcode = Create_TCode(seq, seq["Group"], _subgroup["Code"], seq["Default"], _identifier, itemizer)
+            print(_tcode)
+
+    #add Multiplier group for current sequence
+    for category in seq["Multiplier"]:
+        _subgroup = Get_Subgroup(seq["Sequence"],seq["Group"], category)
         SUBGROUPS.append(_subgroup)
+            #Generate Transaction Codes
+        for identifier in _identifiers:
+            _identifier = IDENTIFIER[identifier]
+            for itemizer in _itemizers:
+                #print(item)
+                _tcode = Create_TCode(seq, seq["Group"], _subgroup["Code"], category, _identifier, itemizer)
+                print(_tcode)
 
+    #add addon group for current Sequence
     for category in seq["Addon"]:
-        _cat = CATEGORIES[category]
-        _sequence = int(str(_cat["Seq"])[:1])
-        _subgroup = {
-            "Seq": f"{_group["Seq"]}{_sequence}",
-            "Code":f"{seq["Sequence"]}{_cat["Code"]}", 
-            "Description":f"{seq["Name"]} {_cat["Description"]}",
-            "Group":_group["Code"],
-            "Type":_group["Type"]
-        }
-        print(_subgroup)
+        _subgroup = Get_Subgroup(seq["Sequence"],seq["Group"], category)
         SUBGROUPS.append(_subgroup)
+        _tcode = Create_TCode(seq, seq["Group"], _subgroup["Code"], category, _identifier, itemizer)
+        print(_tcode)
 
+
+    #add Generates for each Groups
     for gen in seq["Gen"]:
-        _tax = TAXES[gen]
-        _cat = CATEGORIES[_tax["Category"]]
-        _sequence = int(str(_cat["Seq"])[:1])
-        _subgroup = {
-            "Seq": f"{_group["Seq"]}{_sequence}",
-            "Code":f"{seq["Sequence"]}{_cat["Code"]}", 
-            "Description":f"{seq["Name"]} {_cat["Description"]}",
-            "Group":_group["Code"],
-            "Type":_group["Type"]
-        }
-        print(_subgroup)
+        _tax = TAXES[gen]  
+        _subgroup = Get_Subgroup(seq["Sequence"],_tax["Group"], _tax["Category"])
         SUBGROUPS.append(_subgroup)
+  
 
-    """
+"""
     subgroups = []
     for category in sequence["Category"]:
         categoryObj = categories[category]
