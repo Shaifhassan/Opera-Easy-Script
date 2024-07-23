@@ -1,254 +1,278 @@
 {
   "Resort": "DEMO",
-  "Identifier": [
-    { "No": 0, "Seq": 0, "Name": "", "Code": "" },
-    { "No": 1, "Seq": 1, "Name": "Breakfast", "Code": "BF" },
-    { "No": 2, "Seq": 2, "Name": "Lunch", "Code": "LN" },
-    { "No": 3, "Seq": 3, "Name": "Dinner", "Code": "DN" }
-  ],
-  "Taxes": [
-    {
-      "No": 1,
-      "Group": "SVC",
-      "Category": "SC",
-      "Percent": 10,
-      "Base": "B",
-      "AddTo": "111"
-    },
-    {
-      "No": 2,
-      "Group": "TAX",
-      "Category": "TX",
-      "Percent": 10,
-      "Base": "S1",
-      "AddTo": "111"
-    },
-    {
-      "No": 3,
-      "Group": "TAX",
-      "Category": "GT"
-    }
-  ],
-  "Category": [
-    {
-      "Code": "RV",
-      "Description": "Revenue",
-      "Abbr": "",
-      "Seq": 0,
-      "IsRevenue": "Y",
-      "IsManual": "Y",
-      "IsCash": "N",
-      "IsDeposit": "N",
-      "IsAr": "N",
-      "IsPaid": "N"
-    },
-    {
-      "Code": "NR",
-      "Description": "Non-Revenue",
-      "Abbr": "",
-      "Seq": 10,
-      "IsRevenue": "N",
-      "IsManual": "Y",
-      "IsCash": "N",
-      "IsDeposit": "N",
-      "IsAr": "N",
-      "IsPaid": "N"
-    },
-    {
-      "Code": "DC",
-      "Description": "Discounts",
-      "Abbr": "[D]",
-      "Seq": 20,
-      "IsRevenue": "Y",
-      "IsManual": "Y",
-      "IsCash": "N",
-      "IsDeposit": "N",
-      "IsAr": "N",
-      "IsPaid": "N"
-    },
-    {
-      "Code": "RB",
-      "Description": "Rebate",
-      "Abbr": "[X]",
-      "Seq": 40,
-      "IsRevenue": "Y",
-      "IsManual": "Y",
-      "IsCash": "N",
-      "IsDeposit": "N",
-      "IsAr": "N",
-      "IsPaid": "N"
-    },
-    {
-      "Code": "SC",
-      "Description": "Service Charge",
-      "Abbr": "",
-      "Seq": 70,
-      "IsRevenue": "N",
-      "IsManual": "N",
-      "IsCash": "N",
-      "IsDeposit": "N",
-      "IsAr": "N",
-      "IsPaid": "N"
-    },
-    {
-      "Code": "TX",
-      "Description": "GST",
-      "Abbr": "",
-      "Seq": 80,
-      "IsRevenue": "N",
-      "IsManual": "N",
-      "IsCash": "N",
-      "IsDeposit": "N",
-      "IsAr": "N",
-      "IsPaid": "N"
-    },
-    {
-      "Code": "GT",
-      "Description": "Green Tax",
-      "Abbr": "",
-      "Seq": 88,
-      "IsRevenue": "N",
-      "IsManual": "N",
-      "IsCash": "N",
-      "IsDeposit": "N",
-      "IsAr": "N",
-      "IsPaid": "N"
-    },
-    {
-      "Code": "TP",
-      "Description": "Tips",
-      "Abbr": "",
-      "Seq": 90,
-      "IsRevenue": "N",
-      "IsManual": "Y",
-      "IsCash": "N",
-      "IsDeposit": "N",
-      "IsAr": "N",
-      "IsPaid": "N"
-    },
-    {
-      "Code": "CA",
-      "Description": "Cash",
-      "Abbr": "",
-      "IsRevenue": "N",
-      "IsManual": "Y",
-      "IsCash": "Y",
-      "IsDeposit": "N",
-      "IsAr": "N",
-      "IsPaid": "N"
-    },
-    {
-      "Code": "CL",
-      "Description": "City Ledger",
-      "Abbr": "",
-      "IsRevenue": "N",
-      "IsManual": "Y",
-      "IsCash": "N",
-      "IsDeposit": "N",
-      "IsAr": "N",
-      "IsPaid": "N"
-    },
-    {
-      "Code": "PD",
-      "Description": "Paid Out",
-      "Abbr": "",
-      "IsRevenue": "N",
-      "IsManual": "Y",
-      "IsCash": "N",
-      "IsDeposit": "N",
-      "IsAr": "N",
-      "IsPaid": "Y"
-    },
-    {
-      "Code": "OP",
-      "Description": "Other Payment",
-      "Abbr": "",
-      "IsRevenue": "N",
-      "IsManual": "Y",
-      "IsCash": "N",
-      "IsDeposit": "N",
-      "IsAr": "Y",
-      "IsPaid": "N"
-    },
-    {
-      "Code": "CC",
-      "Description": "Credit Card",
-      "Abbr": "",
-      "IsRevenue": "N",
-      "IsManual": "Y",
-      "IsCash": "N",
-      "IsDeposit": "N",
-      "IsAr": "N",
-      "IsPaid": "N"
-    }
-  ],
-  "Groups": [
-    {
-      "Code": "ACC",
-      "Description": "Accommodation",
-      "Seq": 10,
-      "Type": "C",
-      "TrxType": "L"
-    },
-    {
-      "Code": "FNB",
-      "Description": "Food and Beverage",
-      "Seq": 20,
-      "Type": "C",
-      "TrxType": "F"
-    },
-    {
-      "Code": "MOD",
-      "Description": "Minor Operating Departments",
-      "Seq": 50,
-      "Type": "C",
-      "TrxType": "O"
-    },
-    {
-      "Code": "OTH",
-      "Description": "Other / Transportation",
-      "Seq": 60,
-      "Type": "C",
-      "TrxType": "O"
-    },
-    {
-      "Code": "SVC",
-      "Description": "Service Charge",
-      "Seq": 97,
-      "Type": "C",
-      "TrxType": "X"
-    },
-    {
-      "Code": "TAX",
-      "Description": "Tax",
-      "Seq": 98,
-      "Type": "C",
-      "TrxType": "X"
-    },
-    {
-      "Code": "PAY",
-      "Description": "Payment",
-      "Seq": 90,
-      "Type": "FC",
-      "TrxType": null
-    },
-    {
-      "Code": "WRP",
-      "Description": "Wrapper",
-      "Seq": 99,
-      "Type": "PK",
-      "TrxType": null
-    }
-  ],
+  "options": {
+    "Groups": [
+      {
+        "Code": "ACC",
+        "Description": "Accommodation",
+        "Seq": 10,
+        "Type": "C",
+        "TrxType": "L"
+      },
+      {
+        "Code": "FNB",
+        "Description": "Food and Beverage",
+        "Seq": 20,
+        "Type": "C",
+        "TrxType": "F"
+      },
+      {
+        "Code": "MOD",
+        "Description": "Minor Operating Departments",
+        "Seq": 50,
+        "Type": "C",
+        "TrxType": "O"
+      },
+      {
+        "Code": "OTH",
+        "Description": "Other / Transportation",
+        "Seq": 60,
+        "Type": "C",
+        "TrxType": "O"
+      },
+      {
+        "Code": "SVC",
+        "Description": "Service Charge",
+        "Seq": 97,
+        "Type": "C",
+        "TrxType": "X"
+      },
+      {
+        "Code": "TAX",
+        "Description": "Tax",
+        "Seq": 98,
+        "Type": "C",
+        "TrxType": "X"
+      },
+      {
+        "Code": "PAY",
+        "Description": "Payment",
+        "Seq": 90,
+        "Type": "FC",
+        "TrxType": null
+      },
+      {
+        "Code": "WRP",
+        "Description": "Wrapper",
+        "Seq": 99,
+        "Type": "PK",
+        "TrxType": null
+      }
+    ],
+    "Identifier": [
+      { "No": 0, "Seq": 0, "Name": "", "Code": "" },
+      { "No": 1, "Seq": 1, "Name": "Breakfast", "Code": "BF" },
+      { "No": 2, "Seq": 2, "Name": "Lunch", "Code": "LN" },
+      { "No": 3, "Seq": 3, "Name": "Dinner", "Code": "DN" }
+    ],
+    "Taxes": [
+      {
+        "No": 1,
+        "Group": "SVC",
+        "Percent": 10,
+        "Base": "B",
+        "AddTo": "111"
+      },
+      {
+        "No": 2,
+        "Group": "TAX",
+        "Percent": 10,
+        "Base": "S1",
+        "AddTo": "111"
+      },
+      {
+        "No": 3,
+        "Code": "TX",
+        "Group": "TAX"
+      }
+    ],
+    "Category": [
+      {
+        "Code": "RV",
+        "Description": "Revenue",
+        "Abbr": "",
+        "Seq": 0,
+        "IsRevenue": "Y",
+        "IsManual": "N",
+        "IsCash": "N",
+        "IsDeposit": "N",
+        "IsAr": "N",
+        "IsPaid": "N",
+        "Itemized": true,
+        "Tax": null
+      },
+      {
+        "Code": "NR",
+        "Description": "Non-Revenue",
+        "Abbr": "",
+        "Seq": 10,
+        "IsRevenue": "N",
+        "IsManual": "Y",
+        "IsCash": "N",
+        "IsDeposit": "N",
+        "IsAr": "N",
+        "IsPaid": "N",
+        "Itemized": true,
+        "Tax": null
+      },
+      {
+        "Code": "DC",
+        "Description": "Discounts",
+        "Abbr": "[D]",
+        "Seq": 20,
+        "IsRevenue": "Y",
+        "IsManual": "Y",
+        "IsCash": "N",
+        "IsDeposit": "N",
+        "IsAr": "N",
+        "IsPaid": "N",
+        "Itemized": true,
+        "Tax": null
+      },
+      {
+        "Code": "RB",
+        "Description": "Rebate",
+        "Abbr": "[X]",
+        "Seq": 40,
+        "IsRevenue": "Y",
+        "IsManual": "Y",
+        "IsCash": "N",
+        "IsDeposit": "N",
+        "IsAr": "N",
+        "IsPaid": "N",
+        "Itemized": true,
+        "Tax": null
+      },
+      {
+        "Code": "SC",
+        "Description": "Service Charge",
+        "Abbr": "",
+        "Seq": 70,
+        "IsRevenue": "N",
+        "IsManual": "N",
+        "IsCash": "N",
+        "IsDeposit": "N",
+        "IsAr": "N",
+        "IsPaid": "N",
+        "Itemized": false,
+        "Tax": 1
+      },
+      {
+        "Code": "TX",
+        "Description": "GST",
+        "Abbr": "",
+        "Seq": 80,
+        "IsRevenue": "N",
+        "IsManual": "N",
+        "IsCash": "N",
+        "IsDeposit": "N",
+        "IsAr": "N",
+        "IsPaid": "N",
+        "Itemized": false,
+        "Tax": 2
+      },
+      {
+        "Code": "GT",
+        "Description": "Green Tax",
+        "Abbr": "",
+        "Seq": 88,
+        "IsRevenue": "N",
+        "IsManual": "N",
+        "IsCash": "N",
+        "IsDeposit": "N",
+        "IsAr": "N",
+        "IsPaid": "N",
+        "Itemized": false,
+        "Tax": 3
+      },
+      {
+        "Code": "TP",
+        "Description": "Tips",
+        "Abbr": "",
+        "Seq": 90,
+        "IsRevenue": "N",
+        "IsManual": "Y",
+        "IsCash": "N",
+        "IsDeposit": "N",
+        "IsAr": "N",
+        "IsPaid": "N",
+        "Itemized": false,
+        "Tax": null
+      },
+      {
+        "Code": "CA",
+        "Description": "Cash",
+        "Abbr": "",
+        "IsRevenue": "N",
+        "IsManual": "Y",
+        "IsCash": "Y",
+        "IsDeposit": "N",
+        "IsAr": "N",
+        "IsPaid": "N",
+        "Itemized": false,
+        "Tax": null
+      },
+      {
+        "Code": "CL",
+        "Description": "City Ledger",
+        "Abbr": "",
+        "IsRevenue": "N",
+        "IsManual": "Y",
+        "IsCash": "N",
+        "IsDeposit": "N",
+        "IsAr": "N",
+        "IsPaid": "N",
+        "Itemized": false,
+        "Tax": null
+      },
+      {
+        "Code": "PD",
+        "Description": "Paid Out",
+        "Abbr": "",
+        "IsRevenue": "N",
+        "IsManual": "Y",
+        "IsCash": "N",
+        "IsDeposit": "N",
+        "IsAr": "N",
+        "IsPaid": "Y",
+        "Itemized": false,
+        "Tax": null
+      },
+      {
+        "Code": "OP",
+        "Description": "Other Payment",
+        "Abbr": "",
+        "IsRevenue": "N",
+        "IsManual": "Y",
+        "IsCash": "N",
+        "IsDeposit": "N",
+        "IsAr": "Y",
+        "IsPaid": "N",
+        "Itemized": false,
+        "Tax": null
+      },
+      {
+        "Code": "CC",
+        "Description": "Credit Card",
+        "Abbr": "",
+        "IsRevenue": "N",
+        "IsManual": "Y",
+        "IsCash": "N",
+        "IsDeposit": "N",
+        "IsAr": "N",
+        "IsPaid": "N",
+        "Itemized": false,
+        "Tax": null
+      }
+    ]
+  },
   "Sequences": [
     {
       "Sequence": 10,
       "Name": "Accommodation",
       "Group": "ACC",
-      "Gen": [1, 2],
-      "Default": "RV",
-      "Multiplier": ["RB"],
-      "Addon": ["GT", "TP"],
+      "Gen": ["SC", "TX"],
+      "Multiplier": ["RV", "RB", "GT", "TP"],
       "Identifier": [0],
       "Itemizers": [
         { "Itemizer": 0, "Description": "Revenue" },
@@ -262,10 +286,8 @@
       "Sequence": 20,
       "Name": "Celsius",
       "Group": "FNB",
-      "Gen": [1, 2],
-      "Default": "RV",
-      "Multiplier": ["DC", "RB"],
-      "Addon": ["TP"],
+      "Gen": ["SC", "TX"],
+      "Multiplier": ["RV", "DC", "RB", "TP"],
       "Identifier": [1, 2, 3],
       "Itemizers": [
         { "Itemizer": 1, "Description": "Food" },
