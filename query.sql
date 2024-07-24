@@ -1,1 +1,0 @@
-SET DEFINE OFF;

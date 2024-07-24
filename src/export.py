@@ -1,23 +1,50 @@
 def export_tc_groups(resort, groups):
-    with open("tc_groups_import.sql","w") as file:
-        file.write("SET DEFINE OFF;\n")
-        for t in groups:
-            query = f"Insert into TC$_GROUPS (RESORT,IND_REVENUE_GP,TC_GROUP,DESCRIPTION,TC_TRANSACTION_TYPE,CLASS_1_MANDATORY_YN,CLASS_2_MANDATORY_YN,INSERT_USER,INSERT_DATE,UPDATE_USER,UPDATE_DATE,ORDER_BY) values ('{resort}','N','{t["tc_group"]}','{t["description"]}','{t["tc_transaction_type"]}','N','N',2,SYSDATE,2,SYSDATE,{t["order_by"]});\n"
-            file.write(query)
 
-        file.write("/")
+    # Base model for the TC$_GROUPS table
+    base_model = {
+        "resort": resort,
+        "ind_revenue_gp": "N",
+        "tc_group": None,
+        "description": None,
+        "tc_transaction_type": None,
+        "class_1_mandatory_yn": "N",
+        "class_2_mandatory_yn": "N",
+        "insert_user": 2,
+        "insert_date": "SYSDATE",
+        "update_user": 2,
+        "update_date": "SYSDATE",
+        "order_by": None
+    }
+
+    export_data(base_model, groups, "tc_groups_import.sql", "TC$_GROUPS")
 
 
 def export_tc_subgroups(resort, subgroups):
+
+    # Base model for the TC$_SUBGROUPS table
+    base_model = {
+        "resort": resort,
+        "tc_group": None,
+        "tc_subgroup": None,
+        "description": None,
+        "tc_transaction_type": None,
+        "class_1_mandatory_yn": None,
+        "class_2_mandatory_yn": None,
+        "result_included_in_sum_array": None,
+        "insert_user": 2,
+        "insert_date": "SYSDATE",
+        "update_user": 2,
+        "update_date": "SYSDATE",
+        "ind_revenue_gp": None,
+        "tax_yn": "N",
+        "sub_gp_type": None,
+        "internal_yn": None,
+        "order_by": None,
+        "gp_points_redemption_yn": "N",
+        "frequent_flyer_yn": "N"
+    }
     
-    with open("tc_subgroups_import.sql","w") as file:
-        file.write("SET DEFINE OFF;\n")
-
-        for t in subgroups:
-            query = f"Insert into TC$_SUBGROUPS (RESORT,TC_GROUP,TC_SUBGROUP,DESCRIPTION,TC_TRANSACTION_TYPE,CLASS_1_MANDATORY_YN,CLASS_2_MANDATORY_YN,RESULT_INCLUDED_IN_SUM_ARRAY,INSERT_USER,INSERT_DATE,UPDATE_USER,UPDATE_DATE,IND_REVENUE_GP,TAX_YN,SUB_GP_TYPE,INTERNAL_YN,ORDER_BY,GP_POINTS_REDEMPTION_YN,FREQUENT_FLYER_YN) values ('{resort}','{t["tc_group"]}','{t["tc_subgroup"]}','{t["description"]}','{t["tc_transaction_type"]}',null,null,null,2,SYSDATE,2,SYSDATE,null,'N',null,null,{t["order_by"]},'N','N');\n"
-            file.write(query)
-
-        file.write("/")
+    export_data(base_model, subgroups, "tc_subgroups_import.sql", "TC$_SUBGROUPS")
 
 
 
@@ -25,21 +52,21 @@ def export_tc_codes(resort, tc_codes):
 
     base_model = {
         "resort": resort,
-        "tc_group": "x",
-        "tc_subgroup": "x",
-        "trx_code": "x",
+        "tc_group": None,
+        "tc_subgroup": None,
+        "trx_code": None,
         "tcl_code_dflt_cl1": None,
         "tcl_code_dflt_cl2": None,
         "class_1_mandatory_yn": None,
         "class_2_mandatory_yn": None,
-        "description": "x",
-        "tc_transaction_type": "c",
+        "description": None,
+        "tc_transaction_type": "C",
         "is_manual_post_allowed": None,
         "result_included_in_sum_array": None,
         "insert_user": 2,
-        "insert_date": "sysdate",
+        "insert_date": "SYSDATE",
         "update_user": 2,
-        "update_date": "sysdate",
+        "update_date": "SYSDATE",
         "cc_type": None,
         "commission": 0,
         "cc_code": None,
@@ -57,7 +84,7 @@ def export_tc_codes(resort, tc_codes):
         "rev_gp_id": None,
         "rev_bucket_id": None,
         "ar_name_id": None,
-        "trx_code_type": "c",
+        "trx_code_type": "C",
         "frequent_flyer_yn": "N",
         "tax_inclusive_yn": "N",
         "crs_tax_desc": None,
@@ -96,13 +123,7 @@ def export_tc_codes(resort, tc_codes):
         "external_payment_code": None,
     }
     
-    with open("tc_codes_import.sql", "w") as file:
-        file.write("SET DEFINE OFF;\n")
-        for tc in tc_codes:
-            updated_model = update_model(base_model, tc)
-            sql_query = generate_sql(updated_model, "TRX$_CODES")
-            file.write(sql_query)  # Or write to file
-        file.write("/")
+    export_data(base_model, tc_codes, "tc_codes_import.sql", "TRX$_CODES")
 
 
 def update_model(base, updates):
@@ -117,3 +138,15 @@ def generate_sql(model, TABLE):
     fields = ", ".join([key.upper() for key in model.keys()])
     values = ", ".join([f"'{v}'" if v is not None and v != 'SYSDATE' else "null" if v is None else v for v in model.values()])
     return f"INSERT INTO {TABLE} ({fields}) VALUES ({values});\n"
+
+
+
+def export_data(base_model, models, file_name, table_name):
+    with open(file_name,"w") as file:
+        file.write("SET DEFINE OFF;\n")
+        for model in models:
+            updated_model = update_model(base_model, model)
+            sql_query = generate_sql(updated_model, table_name)
+            file.write(sql_query)  # Or write to file
+
+    file.write("/")

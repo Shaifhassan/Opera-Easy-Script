@@ -1,9 +1,11 @@
 
 def create_tc_group(group):
+
+    # Get options defined for the group model
     options = group.get("options", {})
 
-    #default Value
-    group = {
+    # template of the allowed fields for the group
+    template_group = {
         "tc_group":group["code"],
         "description":group["description"],
         "order_by": group["seq"],
@@ -11,7 +13,9 @@ def create_tc_group(group):
     }
 
     #update model with options
-    group.update(options)
+    group = {k:v for k,v in options if k in group and v is not None}
+    group.update(template_group)
+
     return group
 
 
