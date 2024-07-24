@@ -6,65 +6,117 @@
         "code": "ACC",
         "description": "Accommodation",
         "seq": 10,
-        "isRevenue": "Y",
-        "type": "C",
-        "trxType": "L"
+        "options": {
+          "tc_transaction_type": "C",
+          "trx_code_type": "L",
+          "tax_inclusive_yn": "N",
+          "result_included_in_sum_array": "111",
+          "ind_revenue_gp": "Y",
+          "include_in_deposit_rule_yn": "Y"
+        }
       },
       {
         "code": "FNB",
         "description": "Food and Beverage",
         "seq": 20,
-        "isRevenue": "Y",
-        "type": "C",
-        "trxType": "F"
+        "options": {
+          "tc_transaction_type": "C",
+          "trx_code_type": "F",
+          "tax_inclusive_yn": "N",
+          "result_included_in_sum_array": "111",
+          "ind_revenue_gp": "Y",
+          "include_in_deposit_rule_yn": "Y"
+        }
       },
       {
         "code": "MOD",
         "description": "Minor Operating Departments",
         "seq": 50,
-        "isRevenue": "Y",
-        "type": "C",
-        "trxType": "O"
+        "options": {
+          "tc_transaction_type": "C",
+          "trx_code_type": "O",
+          "tax_inclusive_yn": "N",
+          "result_included_in_sum_array": "111",
+          "ind_revenue_gp": "Y",
+          "include_in_deposit_rule_yn": "Y"
+        }
       },
       {
         "code": "OTH",
         "description": "Other / Transportation",
         "seq": 60,
-        "isRevenue": "Y",
-        "type": "C",
-        "trxType": "O"
+        "options": {
+          "tc_transaction_type": "C",
+          "trx_code_type": "O",
+          "tax_inclusive_yn": "N",
+          "result_included_in_sum_array": "111",
+          "ind_revenue_gp": "Y",
+          "include_in_deposit_rule_yn": "Y"
+        }
       },
       {
         "code": "SVC",
         "description": "Service Charge",
         "seq": 97,
-        "isRevenue": "N",
-        "type": "C",
-        "trxType": "X"
+        "options": {
+          "tc_transaction_type": "C",
+          "trx_code_type": "X",
+          "tax_code_no": 1,
+          "tax_inclusive_yn": "N",
+          "result_included_in_sum_array": "111",
+          "ind_revenue_gp": "N",
+          "include_in_deposit_rule_yn": "Y"
+        }
       },
       {
         "code": "TAX",
         "description": "Tax",
         "seq": 98,
-        "isRevenue": "N",
-        "type": "C",
-        "trxType": "X"
+        "options": {
+          "tc_transaction_type": "C",
+          "trx_code_type": "X",
+          "tax_code_no": 2,
+          "tax_inclusive_yn": "N",
+          "result_included_in_sum_array": "111",
+          "ind_revenue_gp": "N",
+          "include_in_deposit_rule_yn": "Y"
+        }
       },
       {
         "code": "PAY",
         "description": "Payment",
         "seq": 90,
-        "isRevenue": "N",
-        "type": "FC",
-        "trxType": null
+        "options": {
+          "tc_transaction_type": "FC"
+        }
+      },
+      {
+        "code": "SSR",
+        "description": "System Revenue",
+        "seq": 99,
+        "options": {
+          "tc_transaction_type": "C",
+          "trx_code_type": "O",
+          "tax_inclusive_yn": "N",
+          "result_included_in_sum_array": "111",
+          "ind_revenue_gp": "N"
+        }
+      },
+      {
+        "code": "SSP",
+        "description": "System Payment",
+        "seq": 99,
+        "options": {
+          "tc_transaction_type": "FC"
+        }
       },
       {
         "code": "WRP",
         "description": "Wrapper",
         "seq": 99,
-        "isRevenue": "N",
-        "type": "PK",
-        "trxType": null
+        "options": {
+          "tc_transaction_type": "PK"
+        }
       }
     ],
     "identifiers": [
@@ -77,60 +129,48 @@
       {
         "code": "RV",
         "description": "Revenue",
-        "defaultGroup": null,
         "abbr": "",
         "seq": 0,
-        "isRevenue": "Y",
-        "isManual": "N",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "N",
+        "options": {
+          "is_manual_post_allowed": "N",
+          "ind_revenue_gp": "Y"
+        },
         "itemized": true,
         "tax": null
       },
       {
         "code": "NR",
         "description": "Non-Revenue",
-        "defaultGroup": null,
         "abbr": "",
         "seq": 10,
-        "isRevenue": "N",
-        "isManual": "Y",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "N",
+        "options": {
+          "is_manual_post_allowed": "N",
+          "ind_revenue_gp": "N"
+        },
         "itemized": true,
         "tax": null
       },
       {
         "code": "DC",
         "description": "Discounts",
-        "defaultGroup": null,
         "abbr": "[D]",
         "seq": 20,
-        "isRevenue": "Y",
-        "isManual": "Y",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "N",
+        "options": {
+          "is_manual_post_allowed": "N",
+          "ind_revenue_gp": "Y"
+        },
         "itemized": true,
         "tax": null
       },
       {
         "code": "RB",
         "description": "Rebate",
-        "defaultGroup": null,
         "abbr": "[X]",
         "seq": 40,
-        "isRevenue": "Y",
-        "isManual": "Y",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "N",
+        "options": {
+          "is_manual_post_allowed": "Y",
+          "ind_revenue_gp": "Y"
+        },
         "itemized": true,
         "tax": null
       },
@@ -140,12 +180,9 @@
         "defaultGroup": "SVC",
         "abbr": "",
         "seq": 70,
-        "isRevenue": "N",
-        "isManual": "N",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "N",
+        "options": {
+          "is_manual_post_allowed": "N"
+        },
         "itemized": false,
         "tax": { "no": 1, "percent": 10, "base": "0", "addTo": "100" }
       },
@@ -155,12 +192,9 @@
         "defaultGroup": "TAX",
         "abbr": "",
         "seq": 80,
-        "isRevenue": "N",
-        "isManual": "N",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "N",
+        "options": {
+          "is_manual_post_allowed": "N"
+        },
         "itemized": false,
         "tax": { "no": 2, "percent": 16, "base": "1", "addTo": "000" }
       },
@@ -170,12 +204,9 @@
         "defaultGroup": "TAX",
         "abbr": "",
         "seq": 88,
-        "isRevenue": "N",
-        "isManual": "N",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "N",
+        "options": {
+          "is_manual_post_allowed": "N"
+        },
         "itemized": false,
         "tax": { "no": 3, "amount": null, "base": null, "addTo": null }
       },
@@ -185,12 +216,10 @@
         "defaultGroup": "OTH",
         "abbr": "",
         "seq": 90,
-        "isRevenue": "N",
-        "isManual": "Y",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "N",
+        "options": {
+          "is_manual_post_allowed": "Y",
+          "ind_revenue_gp": "Y"
+        },
         "itemized": false,
         "tax": null
       },
@@ -199,13 +228,14 @@
         "description": "Cash",
         "defaultGroup": "PAY",
         "abbr": "",
-        "isRevenue": "N",
-        "isManual": "Y",
-        "isCash": "Y",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "N",
-        "itemized": false,
+        "seq": 0,
+        "options": {
+          "ind_cash": "Y",
+          "ind_billing": "Y",
+          "ind_ar": "N",
+          "ind_deposit_yn": "Y"
+        },
+        "itemized": true,
         "tax": null
       },
       {
@@ -213,13 +243,14 @@
         "description": "City Ledger",
         "defaultGroup": "PAY",
         "abbr": "",
-        "isRevenue": "N",
-        "isManual": "Y",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "N",
-        "itemized": false,
+        "seq": 10,
+        "options": {
+          "ind_cash": "N",
+          "ind_billing": "Y",
+          "ind_ar": "N",
+          "ind_deposit_yn": "Y"
+        },
+        "itemized": true,
         "tax": null
       },
       {
@@ -227,13 +258,14 @@
         "description": "Paid Out",
         "defaultGroup": "OTH",
         "abbr": "",
-        "isRevenue": "N",
-        "isManual": "Y",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "Y",
-        "itemized": false,
+        "seq": 0,
+        "options": {
+          "ind_cash": "N",
+          "ind_billing": "Y",
+          "ind_ar": "N",
+          "ind_deposit_yn": "Y"
+        },
+        "itemized": true,
         "tax": null
       },
       {
@@ -241,13 +273,14 @@
         "description": "Other Payment",
         "defaultGroup": "PAY",
         "abbr": "",
+        "seq": 0,
         "isRevenue": "N",
         "isManual": "Y",
         "isCash": "N",
         "isDeposit": "N",
         "isAr": "Y",
         "isPaid": "N",
-        "itemized": false,
+        "itemized": true,
         "tax": null
       },
       {
@@ -255,13 +288,44 @@
         "description": "Credit Card",
         "defaultGroup": "PAY",
         "abbr": "",
+        "seq": 0,
         "isRevenue": "N",
         "isManual": "Y",
         "isCash": "N",
         "isDeposit": "N",
         "isAr": "N",
         "isPaid": "N",
-        "itemized": false,
+        "itemized": true,
+        "tax": null
+      },
+      {
+        "code": "SR",
+        "description": "System Revenue",
+        "defaultGroup": "SSR",
+        "abbr": "",
+        "seq": 0,
+        "isRevenue": "N",
+        "isManual": "N",
+        "isCash": "N",
+        "isDeposit": "N",
+        "isAr": "N",
+        "isPaid": "N",
+        "itemized": true,
+        "tax": null
+      },
+      {
+        "code": "SP",
+        "description": "System Payment",
+        "defaultGroup": "SSP",
+        "abbr": "",
+        "seq": 0,
+        "isRevenue": "N",
+        "isManual": "N",
+        "isCash": "N",
+        "isDeposit": "N",
+        "isAr": "N",
+        "isPaid": "N",
+        "itemized": true,
         "tax": null
       }
     ]
@@ -270,6 +334,7 @@
     {
       "sequence": 10,
       "name": "Accommodation",
+      "prefix": true,
       "group": "ACC",
       "categories": [
         { "code": "SC", "role": "generate" },
@@ -291,6 +356,7 @@
     {
       "sequence": 20,
       "name": "Celsius",
+      "prefix": true,
       "group": "FNB",
       "categories": [
         { "code": "SC", "role": "generate" },
@@ -307,6 +373,78 @@
         { "itemizer": 3, "description": "Non Alc Beverage" },
         { "itemizer": 8, "description": "Tobacco" },
         { "itemizer": 9, "description": "Other" }
+      ]
+    },
+    {
+      "sequence": 90,
+      "name": "FO",
+      "prefix": false,
+      "group": "PAY",
+      "categories": [{ "code": "CA", "role": "multiply" }],
+      "identifiers": [0],
+      "itemizers": [{ "itemizer": 0, "description": "Cash" }]
+    },
+    {
+      "sequence": 90,
+      "name": "FO",
+      "prefix": false,
+      "group": "PAY",
+      "categories": [{ "code": "CL", "role": "multiply" }],
+      "identifiers": [0],
+      "itemizers": [{ "itemizer": 0, "description": "City Ledger" }]
+    },
+    {
+      "sequence": 91,
+      "name": "FO",
+      "prefix": false,
+      "group": "PAY",
+      "categories": [{ "code": "CC", "role": "multiply" }],
+      "identifiers": [0],
+      "itemizers": [
+        {
+          "itemizer": 1,
+          "description": "Visa Card",
+          "options": { "ccType": "M", "ccCode": "VA" }
+        },
+        { "itemizer": 2, "description": "Amex Card" },
+        { "itemizer": 3, "description": "Master Card" },
+        { "itemizer": 4, "description": "Dinner Card" },
+        { "itemizer": 5, "description": "China Union Card" }
+      ]
+    },
+    {
+      "sequence": 99,
+      "name": "Internal",
+      "prefix": false,
+      "group": "SSR",
+      "categories": [{ "code": "SR", "role": "multiply" }],
+      "identifiers": [0],
+      "itemizers": [
+        {
+          "itemizer": 1,
+          "description": "Credit Cards Transfer to AR",
+          "options": { "isPaid": "N" }
+        },
+        {
+          "itemizer": 2,
+          "description": "Cash Drop Transaction Code",
+          "options": { "isPaid": "Y" }
+        },
+        {
+          "itemizer": 5,
+          "description": "Check Drop Transaction Code",
+          "options": { "isPaid": "Y" }
+        },
+        {
+          "itemizer": 3,
+          "description": "Paid Out - Check Exchange",
+          "options": { "isPaid": "Y" }
+        },
+        {
+          "itemizer": 4,
+          "description": "Paid Out - Currency Exchange",
+          "options": { "isPaid": "Y" }
+        }
       ]
     }
   ]
