@@ -1,6 +1,6 @@
 import json
 from src.create import create_tc_group, create_tc_subgroup, create_tc_code, create_categories, create_tc_generate
-from src.export import export_tc_groups, export_tc_subgroups, export_tc_codes
+from src.export import export_tc_groups, export_tc_subgroups, export_tc_codes,export_tc_generates
 
 
 # Load the JSON payload
@@ -17,7 +17,7 @@ SEQUENCES = data["sequences"]
 # collection for export process
 TC_GROUPS = {}
 TC_SUBGROUPS = {}
-TC_CODES = []
+TC_CODES = {}
 
 
 # add values to TC_GROUPS for transaction code creation
@@ -51,26 +51,31 @@ for sequence in SEQUENCES:
                 tc_group = GROUPS.get(tc_subgroup["tc_group"], None)
                 # Loop through list itemizers attached to the sequence
                 for itemizer in sequence["itemizers"]:
+                    # Create a transaction code
                     tc_code = create_tc_code(sequence, tc_subgroup, tc_group, category, identifier, itemizer, itemizer["description"])
-                    tc_code["generates"] = generates.copy()
 
-                    for gen in tc_code["generates"]:
-                        gen["tc_group_generator"] = tc_code["tc_group"]
-                        gen["tc_subgroup_generator"] = tc_code["tc_subgroup"]
-                        gen["trx_code_generator"] = tc_code["trx_code"]
+                    # Assign generates with updated generator fields
+                    tc_code["generates"] = [{**gen, 
+                            "tc_group_generator": tc_code["tc_group"], 
+                            "tc_subgroup_generator": tc_code["tc_subgroup"], 
+                            "trx_code_generator": tc_code["trx_code"]
+                            } for gen in generates ]
 
-                    TC_CODES.append(tc_code)
+                    # Add the transaction code to the TC_CODES dictionary
+                    TC_CODES[tc_code["trx_code"]] = tc_code
             elif role == "generate":
                 tc_group = GROUPS.get(category["defaultGroup"], None)
                 tc_code = create_tc_code(sequence, tc_subgroup, tc_group, category, identifier, None, category["description"])
                 generate = create_tc_generate(tc_group, category, tc_code)  
                 generates.append(generate)
-                TC_CODES.append(tc_code)
+                TC_CODES[tc_code["trx_code"]]=tc_code
             else:
                 tc_group = GROUPS.get(category["defaultGroup"], None)
                 tc_code = create_tc_code(sequence, tc_subgroup, tc_group, category, identifier, None, category["description"])
-                TC_CODES.append(tc_code)
-"""
+                TC_CODES[tc_code["trx_code"]]=tc_code
+            
+            
+
 
 # export groups
 # export_tc_groups(RESORT, TC_GROUPS.values())
@@ -79,6 +84,6 @@ for sequence in SEQUENCES:
 #export_tc_subgroups(RESORT, TC_SUBGROUPS.values())
 
 #
-export_tc_codes(RESORT, TC_CODES)
+#export_tc_codes(RESORT, TC_CODES)
 
-"""
+export_tc_generates(RESORT, TC_CODES.values())

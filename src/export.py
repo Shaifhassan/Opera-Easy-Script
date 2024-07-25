@@ -129,7 +129,7 @@ def export_tc_codes(resort, tc_codes):
 def export_tc_generates(resort, tc_codes):
 
     base_model = {
-        "id": "trx_class_relationship_id.nextval",
+        "id": "TRX_CLASS_RELATIONSHIP_ID.NEXTVAL",
         "resort": resort,
         "tc_group": None,
         "tc_subgroup":None,
@@ -159,10 +159,9 @@ def export_tc_generates(resort, tc_codes):
         "update_date":"SYSDATE",
     }
 
-    for tc in tc_codes:
-        if tc["generates"]:
-            for gen in tc["generates"]:
-                export_data(base_model, gen, "tc_generates_import.sql", "TRX_CLASS_RELATIONSHIPS")
+    generates = [gen for tc in tc_codes if tc.get("generates") for gen in tc["generates"]]
+
+    export_data(base_model, generates, "tc_generates_import.sql", "TRX_CLASS_RELATIONSHIPS")
 
 
 def update_model(base, updates):
@@ -175,7 +174,7 @@ def update_model(base, updates):
 def generate_sql(model, TABLE):
     # Convert all field names to uppercase
     fields = ", ".join([key.upper() for key in model.keys()])
-    values = ", ".join([f"'{v}'" if v is not None and v != 'SYSDATE' else "null" if v is None else v for v in model.values()])
+    values = ", ".join([f"'{v}'" if v is not None and v not in ('SYSDATE','TRX_CLASS_RELATIONSHIP_ID.NEXTVAL') else "null" if v is None else v for v in model.values()])
     return f"INSERT INTO {TABLE} ({fields}) VALUES ({values});\n"
 
 
@@ -188,4 +187,12 @@ def export_data(base_model, models, file_name, table_name):
             sql_query = generate_sql(updated_model, table_name)
             file.write(sql_query)  # Or write to file
 
-    file.write("/")
+        file.write("/")
+
+def generate_query(base_model, models, table_name):
+    sql_queries = []
+    for model in models:
+        updated_model = update_model(base_model, model)
+        sql_query = generate_sql(updated_model, table_name)
+        sql_queries.append(sql_query)
+    return sql_queries
