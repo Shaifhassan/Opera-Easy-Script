@@ -14,9 +14,7 @@ def create_tc_group(group):
     }
 
     # Get options defined for the group model and merge valid options
-    options = group.get("options", {})
-    tc_group_options = {k: v for k, v in options.items() if k in tc_option_template and v is not None}
-    tc_option_template.update(tc_group_options)
+    patch_options(tc_option_template, group.get("options", {}))
 
     # Initialize the group model with basic information and merged options
     tc_group = {
@@ -56,9 +54,8 @@ def create_tc_subgroup(groups, sequence, category):
     }
 
     # Merge valid options from the group
-    group_options = group.get("options", {})
-    tc_subgroup_group_options = {k: v for k, v in group_options.items() if k in tc_option_template and v is not None}
-    tc_option_template.update(tc_subgroup_group_options)
+    patch_options(tc_option_template, group.get("options", {}))
+
 
     # Initialize the subgroup model with basic information and merged options
     tc_subgroup = {
@@ -108,21 +105,16 @@ def create_tc_code(sequence, tc_subgroup, group, category, identifier, itemizer,
     }
 
     # Merge valid options from the group (Level 0)
-    group_options = group.get("options", {})
-    tc_group_options = {k: v for k, v in group_options.items() if k in tc_option_template and v is not None}
-    tc_option_template.update(tc_group_options)
+    patch_options(tc_option_template, group.get("options", {}))
 
     # Merge valid options from the category (Level 2)
-    category_options = category.get("options", {})
-    tc_category_options = {k: v for k, v in category_options.items() if k in tc_option_template and v is not None}
-    tc_option_template.update(tc_category_options)
+    patch_options(tc_option_template, category.get("options", {}))
 
     # Merge valid options from the itemizer if available (Level 3)
     if itemizer:
         item_code = itemizer.get("itemizer", 0) + category.get("seq", 0)
-        itemizer_options = itemizer.get("options", {})
-        tc_itemizer_options = {k: v for k, v in itemizer_options.items() if k in tc_option_template and v is not None}
-        tc_option_template.update(tc_itemizer_options)
+        patch_options(tc_option_template, itemizer.get("options", {}))
+
     else:
         item_code = category.get("seq", 0)
 
@@ -163,8 +155,9 @@ def create_categories(categories, sequence):
     return _categories
 
 
-def create_tc_generate(category, trx_code):
+def create_tc_generate(group, category, trx_code):
 
+    # Define allowed options for the generates
     tax_option_template = {
         "amount":None,
         "percentage":None,
@@ -174,10 +167,11 @@ def create_tc_generate(category, trx_code):
         "result_included_in_sum_array":None
     }
 
+    # Merge valid options from the group (Level 0)
+    patch_options(tax_option_template, group.get("options", {}))
+
     # Merge valid options from the category (Level 2)
-    category_options = category.get("options", {})
-    tax_category_options = {k: v for k, v in category_options.items() if k in tax_option_template and v is not None}
-    tax_option_template.update(tax_category_options)
+    patch_options(tax_option_template, category.get("options", {}))
 
     # create generate record
     generate = {
@@ -186,5 +180,10 @@ def create_tc_generate(category, trx_code):
         "trx_code":trx_code["trx_code"]
     }
 
-    generate.update(tax_category_options)
+    generate.update(tax_option_template)
     return generate
+
+
+def patch_options(template, options):
+    patch_options = {k: v for k, v in options.items() if k in template and v is not None}
+    template.update(patch_options)

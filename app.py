@@ -22,8 +22,8 @@ TC_CODES = []
 
 # add values to TC_GROUPS for transaction code creation
 for group in GROUPS.values():
-    tc_group = create_tc_group(group)
-    TC_GROUPS[tc_group["tc_group"]] = tc_group
+    grp = create_tc_group(group)
+    TC_GROUPS[grp["tc_group"]] = grp
 
 
 # Process sequences to generate transaction groups and codes
@@ -51,7 +51,7 @@ for sequence in SEQUENCES:
                 tc_group = GROUPS.get(tc_subgroup["tc_group"], None)
                 # Loop through list itemizers attached to the sequence
                 for itemizer in sequence["itemizers"]:
-                    tc_code = create_tc_code(sequence, tc_subgroup, tc_code, category, identifier, itemizer, itemizer["description"])
+                    tc_code = create_tc_code(sequence, tc_subgroup, tc_group, category, identifier, itemizer, itemizer["description"])
                     tc_code["generates"] = generates.copy()
 
                     for gen in tc_code["generates"]:
@@ -61,14 +61,14 @@ for sequence in SEQUENCES:
 
                     TC_CODES.append(tc_code)
             elif role == "generate":
-                tc_code = GROUPS.get(category["defaultGroup"], None)
-                tc_code = create_tc_code(sequence, tc_subgroup, tc_code, category, identifier, None, category["description"])
-                generate = create_tc_generate(category, tc_code)  
+                tc_group = GROUPS.get(category["defaultGroup"], None)
+                tc_code = create_tc_code(sequence, tc_subgroup, tc_group, category, identifier, None, category["description"])
+                generate = create_tc_generate(tc_group, category, tc_code)  
                 generates.append(generate)
                 TC_CODES.append(tc_code)
             else:
-                tc_code = GROUPS.get(category["defaultGroup"], None)
-                tc_code = create_tc_code(sequence, tc_subgroup, tc_code, category, identifier, None, category["description"])
+                tc_group = GROUPS.get(category["defaultGroup"], None)
+                tc_code = create_tc_code(sequence, tc_subgroup, tc_group, category, identifier, None, category["description"])
                 TC_CODES.append(tc_code)
 """
 
