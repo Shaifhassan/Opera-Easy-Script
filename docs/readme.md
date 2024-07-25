@@ -1,19 +1,23 @@
-### README: Generating Transaction Code List from Payload.json
+## README
 
 #### Introduction
 
-This guide explains how to use the `Payload.json` file to generate a list of transaction codes for a given resort or company. The transaction codes are generated based on specific groups, subgroups, categories, and identifiers defined in the payload. The output is typically a set of SQL scripts to insert the generated transaction codes into a database.
+This guide explains how to use the `Payload.json` file to generate a list of transaction codes import scripts for a given resort. This script generate transaction code groups, subgroups, transaction codes, generates import scripts. The output is typically a set of SQL scripts to insert the generated transaction codes into opera database.
+
+The Following script generate transaction code based on Transaction code template defined in [Transaction Code Standard] although this can be customized
+
+---
 
 #### Payload Structure
 
 The `Payload.json` file is structured to include various data elements necessary for generating transaction codes. Below is a breakdown of the key sections:
 
-1. **Resort**: Identifies the resort or company for which the transaction codes are being generated.
+1. **Resort**: Identifies the resort for which the transaction codes are being generated.
 
 2. **Options**:
 
-   - **Groups**: Defines the major categories (groups) of transactions, each with a unique code and description.
-   - **Identifiers**: Specific identifiers used to differentiate transactions within the same group.
+   - **Groups**: Defines the groups of transactions, each with a unique code and description.
+   - **Identifiers**: Specific identifiers used to create mutliple set of transaction codes for each sequence.
    - **Categories**: Further classification of transactions within groups, with options for itemization and tax settings.
 
 3. **Sequences**: Details how transaction codes are to be generated, specifying the order and structure of groups and categories.
