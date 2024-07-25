@@ -1,119 +1,163 @@
-
 def create_tc_group(group):
-
-    # Get options defined for the group model
-    options = group.get("options", {})
-
-    # template of the allowed fields for the group
-    template_group = {
-        "tc_group":group["code"],
-        "description":group["description"],
-        "order_by": group["seq"],
-        "tc_transaction_type":"C",
+    """
+    Creates a transaction group model from the given group data.
+    
+    Args:
+        group (dict): The group data containing options and basic information.
+        
+    Returns:
+        dict: A dictionary representing the transaction group with merged options.
+    """
+    # Define allowed options for the group
+    tc_option_template = {
+        "tc_transaction_type": None
     }
 
-    #update model with options
-    group = {k:v for k,v in options if k in group and v is not None}
-    group.update(template_group)
+    # Get options defined for the group model and merge valid options
+    options = group.get("options", {})
+    tc_group_options = {k: v for k, v in options.items() if k in tc_option_template and v is not None}
+    tc_option_template.update(tc_group_options)
 
-    return group
+    # Initialize the group model with basic information and merged options
+    tc_group = {
+        "tc_group": group.get("code", "UNKNOWN"),
+        "description": group.get("description", ""),
+        "order_by": group.get("seq", 0),
+    }
+
+    tc_group.update(tc_option_template)
+    return tc_group
 
 
-# Function to create a transaction subgroup
-def create_tc_subgroup(tc_groups, sequence, category):
-    # Load the group based on the group defined in category or sequence
-    group_code = category.get("defaultGroup", sequence.get("group"))
-    group = tc_groups.get(group_code, {})
-
-    # Get the first digit of the sequence number defined in the category
-    sequence_num = int(str(category["seq"])[:1])
-
-    # Get Options from Category
-    options = category.get("options", {})
-
-    # Define subgroup template
-    subgroup = {
-        "tc_subgroup":None,
-        "description":None,
-        "tc_group":None,
-        "tc_transaction_type":None,
-        "order_by":None
-        }
+def create_tc_subgroup(groups, sequence, category):
+    """
+    Creates a transaction subgroup model from the given sequence and category data.
     
-    # Apply Group options
-    subgroup.update(group)
+    Args:
+        groups (dict): The dictionary of existing groups.
+        sequence (dict): The sequence data containing group and other attributes.
+        category (dict): The category data containing default group and other attributes.
+        
+    Returns:
+        dict: A dictionary representing the transaction subgroup with merged options.
+    """
+    group_code = category.get("defaultGroup", sequence.get("group"))
+    group = groups.get(group_code, {})
 
-    # Apply Category options
-    subgroup.update(options)
+    # Error handling if necessary keys are missing
+    if not group:
+        raise ValueError(f"Group code '{group_code}' not found in groups")
 
-    # Update the subgroup with new values
-    subgroup.update({
-        "tc_subgroup": f"{sequence['sequence']}{category['code']}",
-        "description": f"{sequence['name']} {category['description']}",
-        "order_by": int(f"{sequence['sequence']}{sequence_num}")
-    })
+    sequence_num = int(str(category.get("seq", "0"))[:1])
 
-    return subgroup
+    # Define allowed options for the subgroup
+    tc_option_template = {
+        "tc_transaction_type": None
+    }
+
+    # Merge valid options from the group
+    group_options = group.get("options", {})
+    tc_subgroup_group_options = {k: v for k, v in group_options.items() if k in tc_option_template and v is not None}
+    tc_option_template.update(tc_subgroup_group_options)
+
+    # Initialize the subgroup model with basic information and merged options
+    tc_subgroup = {
+        "tc_group": group.get('code', 'UNKNOWN'),
+        "tc_subgroup": f"{sequence.get('sequence', '00')}{category.get('code', 'XX')}",
+        "description": f"{sequence.get('name', '')} {category.get('description', '')}",
+        "order_by": int(f"{sequence.get('sequence', '00')}{sequence_num}")
+    }
+
+    tc_subgroup.update(tc_option_template)
+    return tc_subgroup
 
 
-# Function to generate transaction code
-def create_tc_code(sequence, tc_subgroup, group_code, category, identifier, itemizer, description):
-    # get transaction code option based on itemizer definitions
+def create_tc_code(sequence, tc_subgroup, group, category, identifier, itemizer, description):
+    """
+    Creates a transaction code model from the given data.
+    
+    Args:
+        sequence (dict): The sequence data containing necessary attributes.
+        tc_subgroup (dict): The transaction subgroup data.
+        group (dict): The group data.
+        category (dict): The category data containing options.
+        identifier (dict): The identifier data.
+        itemizer (dict): The itemizer data containing options.
+        description (str): The description for the transaction code.
+        
+    Returns:
+        dict: A dictionary representing the transaction code with merged options.
+    """
+    # Define allowed options for the transaction code
+    tc_option_template = {
+        "trx_code_type": None,
+        "tax_code_no": None,
+        "tax_inclusive_yn": None,
+        "result_included_in_sum_array": None,
+        "cc_type": None,
+        "cc_code": None,
+        "ind_cash": None,
+        "is_manual_post_allowed": None,
+        "ind_billing": None,
+        "ind_ar": None,
+        "ind_revenue_gp": None,
+        "ind_deposit_yn": None,
+        "inh_deposit_yn": None,
+        "include_in_deposit_rule_yn": None,
+        "adj_trx_code": None
+    }
+
+    # Merge valid options from the group (Level 0)
+    group_options = group.get("options", {})
+    tc_group_options = {k: v for k, v in group_options.items() if k in tc_option_template and v is not None}
+    tc_option_template.update(tc_group_options)
+
+    # Merge valid options from the category (Level 2)
+    category_options = category.get("options", {})
+    tc_category_options = {k: v for k, v in category_options.items() if k in tc_option_template and v is not None}
+    tc_option_template.update(tc_category_options)
+
+    # Merge valid options from the itemizer if available (Level 3)
     if itemizer:
-        item_code = itemizer.get("itemizer", 0) + category["seq"]
-        options = itemizer.get("options", {})
+        item_code = itemizer.get("itemizer", 0) + category.get("seq", 0)
+        itemizer_options = itemizer.get("options", {})
+        tc_itemizer_options = {k: v for k, v in itemizer_options.items() if k in tc_option_template and v is not None}
+        tc_option_template.update(tc_itemizer_options)
     else:
-        item_code = category["seq"]
-        options = {}
+        item_code = category.get("seq", 0)
 
-    # variables
     trx_code_no = f'{item_code:02}'
     trx_description = f"{sequence['name'] if sequence['prefix'] else ''}{f' {identifier['name']}' if identifier['name'] else ''}{f' {description}' if description else ''}{f' {category['abbr']}' if category['abbr'] else ''}"
-
-    #transaction code default template 
+    # Initialize the transaction code model with basic information and merged options
     trx_code = {
-        "trx_code":None,
-        "description":None,
-        "tc_subgroup":None,
-        "tc_group":None,
-        "tc_transaction_type":None,
-        "trx_code_type":None,
-        "tax_code_no":None,
-        "tax_inclusive_yn":None,
-        "result_included_in_sum_array":None,
-        "cc_type":None,
-        "cc_code":None,
-        "ind_cash":None,
-        "is_manual_post_allowed":None,
-        "ind_billing":None,
-        "ind_ar": None,
-        "ind_revenue_gp":None,
-        "ind_deposit_yn":None,
-        "inh_deposit_yn":None,
-        "include_in_deposit_rule_yn":None,
-        "adj_trx_code":None
+        "trx_code": f'{sequence.get("sequence", "00")}{identifier.get("seq", "00")}{trx_code_no}',
+        "description": trx_description.strip(),
+        "tc_subgroup": tc_subgroup.get("tc_subgroup", "UNKNOWN"),
+        "tc_group": tc_subgroup.get("tc_group", "UNKNOWN"),
+        "tc_transaction_type": tc_subgroup.get("tc_transaction_type", "C"),
+        "generates": None
     }
 
-    # apply changes from subgroup
-    trx_code.update(tc_subgroup)
-
-    # Merge options into trx_code dictionary
-    trx_code.update(options)
-
-    trx_code.update({
-        "trx_code": f'{sequence["sequence"]}{identifier["seq"]}{trx_code_no}',
-        "description": trx_description.strip(),
-        "generates": None
-    })
-
+    trx_code.update(tc_option_template)
     return trx_code
 
 
-# Function to generate the list of categories
 def create_categories(categories, sequence):
+    """
+    Generates a list of category models from the given sequence data.
+    
+    Args:
+        categories (dict): The dictionary of available categories.
+        sequence (dict): The sequence data containing category codes.
+        
+    Returns:
+        list: A list of dictionaries representing the categories with roles.
+    """
     _categories = []
-    for cat in sequence["categories"]:
-        category = categories[cat["code"]]
-        category["role"] = cat["role"]
+    for cat in sequence.get("categories", []):
+        category = categories.get(cat["code"], {}).copy()
+        if not category:
+            raise ValueError(f"Category code '{cat['code']}' not found in categories")
+        category["role"] = cat.get("role", "")
         _categories.append(category)
     return _categories
