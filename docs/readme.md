@@ -2,32 +2,34 @@
 
 #### Introduction
 
-This guide explains how to use the `Payload.json` file to generate a list of transaction codes import scripts for a given resort. This script generate transaction code groups, subgroups, transaction codes, generates import scripts. The output is typically a set of SQL scripts to insert the generated transaction codes into opera database.
+This guide explains how to use the `opera.py` module to generate a list of transaction codes import scripts for a given resort. This script outputs transaction code groups, subgroups, transaction codes. The output is typically a set of SQL scripts to insert the generated transaction codes into opera database.
 
-The Following script generate transaction code based on Transaction code template defined in [Transaction Code Standard] although this can be customized
+The Following script generate transaction code based on Transaction code template defined in [Transaction Code Standard](/docs/Transaction%20Code%20Standard.md) although this can be customized
 
----
+#### Get Started
 
-#### Payload Structure
+```python
 
-The `Payload.json` file is structured to include various data elements necessary for generating transaction codes. Below is a breakdown of the key sections:
+import json
+from src.opera import generate_tc_script
 
-1. **Resort**: Identifies the resort for which the transaction codes are being generated.
+# Load the JSON payload from a sample payload file
+with open("payload.json", 'r') as file:
+    data = json.load(file)
 
-2. **Options**:
+# passthe payload data to the opera.generate_tc_script
+generate_tc_script(data)
 
-   - **Groups**: Defines the groups of transactions, each with a unique code and description.
-   - **Identifiers**: Specific identifiers used to create mutliple set of transaction codes for each sequence.
-   - **Categories**: Further classification of transactions within groups, with options for itemization and tax settings.
+```
 
-3. **Sequences**: Details how transaction codes are to be generated, specifying the order and structure of groups and categories.
+### Payload Structure
 
-#### Example Structure
+The `Payload` file is structured to include various data elements necessary for generating transaction codes. Below is a breakdown of the key sections:
 
 ```json
 {
-  "Resort": "DEMO",
-  "options": {
+  "Resort": "",
+  "setup": {
     "groups": [...],
     "identifiers": [...],
     "categories": [...]
@@ -36,196 +38,141 @@ The `Payload.json` file is structured to include various data elements necessary
 }
 ```
 
+#### 1. **Root Level**
+
+- `**resort**`: The name or identifier of the resort or company. This is a string that uniquely identifies the entity for which the transaction codes are being generated.
+
+  ```json
+  "resort": "DEMO"
+  ```
+
+- **setup**: Contains the primary configuration details, including groups, identifiers, and categories.
+
+#### 2. **Setup Section**
+
+- `**groups**`: A list of transaction groups, each defined by a unique code and a set of options.
+
+  - **code**: Unique identifier for the group.
+  - **description**: Descriptive name of the group.
+  - **seq**: Sequence number, used for ordering.
+  - **options**: Key-value pairs defining specific attributes of the group and depended subgroups and transaction codes. (hierarchy lvl 1)
+
+  ```json
+  {
+    "code": "ACC",
+    "description": "Accommodation",
+    "seq": 10,
+    "options": {...}
+  }
+  ```
+
+  > [!NOTE]
+  > Sequence No define is the order by for the transaction group
+
+- `**identifiers**`: A list of identifiers used to specify different aspects or types of transactions within groups.
+
+  - **no**: Numeric identifier.
+  - **seq**: Sequence number for ordering.
+  - **name**: Name of the identifier which will be used for transaction code descriptions
+  - **code**: Code representing the identifier.
+
+  ```json
+  {
+    "no": 1,
+    "seq": 1,
+    "name": "Breakfast",
+    "code": "BF"
+  }
+  ```
+
+- `**categories**`: Detailed classifications within each group, including their specific options.
+
+  - **code**: Unique code for the category.
+  - **description**: Descriptive name of the category.
+  - **abbr**: Abbreviation used for the category.
+  - **seq**: Sequence number.
+  - **defaultGroup**: (Optional) Default group code associated with the category.
+  - **options**: Key-value pairs defining specific attributes of the depended transaction codes. (hierarchy lvl 2)
+
+  ```json
+  {
+    "code": "RV",
+    "description": "Revenue",
+    "abbr": "",
+    "seq": 0,
+    "options": {...},
+    "itemized": true
+  }
+  ```
+
+#### 3. **Sequences Section**
+
+- **sequences**: Defines how transaction codes are generated, including group associations and itemizers.
+
+  - **sequence**: Numeric sequence for ordering.
+  - **name**: Name of the sequence.
+  - **prefix**: Boolean indicating if a prefix is used.
+  - **group**: The associated group code.
+  - **identifiers**: Identifiers associated with the sequence.
+  - **categories**:
+
+    - **code**: Categories linked with the sequence
+    - **role**: specifying their role (e.g., "generate", "multiply", "others").
+      - **generate**: a single transaction code will be created and attached to mutliplier type as generate.
+      - **multiply**: itemizers will be mutliplied by this category.
+      - **others**: a single transaction code will be created for this category.
+        > [!IMPORTANT]
+        > generate need to be define first before any thing else, and also in order of the generate eg: SVC first than GST
+
+  - **itemizers**: Specific items within the category, including their descriptions and options.
+    - **itemizer**: Itemizer number which will be reflexted as the last two digit of the transcansaction code,
+    - **description**: Itemizer description which will be reflexted on transcansaction code description,
+    - **options**: Key-value pairs defining specific attributes of the depended transaction codes. (hierarchy lvl 3)
+
+  ```json
+  {
+    "sequence": 10,
+    "name": "Accommodation",
+    "prefix": true,
+    "group": "ACC",
+    "identifiers": [0],
+    "categories": [
+      { "code": "SC", "role": "generate" },
+      { "code": "TX", "role": "generate" },
+      { "code": "RV", "role": "multiply" }
+    ],
+    "itemizers": [
+      { "itemizer": 0, "description": "Revenue", "options":{...} },
+      { "itemizer": 1, "description": "Room Upgrade", "options":{...} }
+    ]
+  }
+  ```
+
 #### Full Option List
 
 Each transaction code model generated will utilize the following options:
 
 ```json
 {
-  "trx_code": null,
-  "description": null,
-  "tc_subgroup": null,
-  "tc_group": null,
-  "tc_transaction_type": null,
-  "trx_code_type": null,
+  "trx_code_type": "FC",
   "tax_code_no": null,
-  "tax_inclusive_yn": null,
+  "tax_inclusive_yn": "N",
   "result_included_in_sum_array": null,
   "cc_type": null,
   "cc_code": null,
-  "ind_cash": null,
-  "is_manual_post_allowed": null,
-  "ind_billing": null,
-  "ind_ar": null,
-  "ind_revenue_gp": null,
-  "ind_deposit_yn": null,
-  "inh_deposit_yn": null,
+  "ind_cash": "N",
+  "is_manual_post_allowed": "N",
+  "trx_code_display": null,
+  "ind_billing": "N",
+  "ind_ar": "N",
+  "ind_revenue_gp": "N",
+  "ind_deposit_yn": "N",
+  "inh_deposit_yn": "N",
+  "include_in_deposit_rule_yn": "N",
   "adj_trx_code": null
 }
 ```
 
-These options represent various attributes of a transaction code, such as its type, whether it is cash-based, whether it is included in revenue or billing, and tax-related settings.
+> Options are defined based on the hierarchy where lvl 1 is weakers and lvl 3 is strongest
 
-#### Option Layout
-
-```json
-{
-  "Resort": "DEMO",
-  "options": {
-    "groups": ["options":{ }, ...],
-    "identifiers": [...],
-    "categories": ["options":{ }, ...]
-  },
-  "sequences": [...]
-}
-```
-
-#### Steps to Generate Transaction Codes
-
-1. **Preparation**:
-
-   - Ensure the `Payload.json` file is correctly formatted and includes all necessary groups, identifiers, categories, and sequences.
-
-2. **Loading Data**:
-
-   - Parse the `Payload.json` file to extract data into the application. This involves loading groups, identifiers, categories, and sequences into appropriate data structures.
-
-3. **Generating Transaction Codes**:
-
-   - Use the data to create transaction codes. This typically involves combining group codes, identifiers, and categories according to the rules defined in the sequences section.
-
-4. **Exporting SQL Scripts**:
-
-   - The generated transaction codes are then formatted into SQL insert statements. This can include additional options or settings from the full option list.
-
-5. **Review and Execution**:
-   - Review the generated SQL scripts for accuracy and completeness.
-   - Execute the SQL scripts to insert the transaction codes into the database.
-
-#### Example Usage
-
-The following Python function provides a basic structure for generating transaction codes:
-
-```python
-def generate_transaction_codes(payload_path):
-    with open(payload_path, 'r') as file:
-        data = json.load(file)
-
-    resort = data["resort"]
-    groups = {group["code"]: group for group in data["options"]["groups"]}
-    identifiers = {identifier["no"]: identifier for identifier in data["options"]["identifiers"]}
-    categories = {category["code"]: category for category in data["options"]["categories"]}
-    sequences = data["sequences"]
-
-    # Further processing to generate transaction codes
-    # ...
-```
-
-#### Conclusion
-
-This README provides a high-level overview of the process and structures involved in generating transaction codes from a `Payload.json` file. It is essential to tailor the implementation details to the specific requirements and data structures of your application. Always validate the generated codes and SQL scripts to ensure they meet your operational and data integrity standards.
-
-### README: Modifier Options in Payload.json
-
-#### Introduction
-
-This document provides detailed information on how to use the `Payload.json` file to generate transaction codes. Specifically, it outlines the hierarchy and options available at different levels: **Itemizers**, **Categories**, and **Groups**. These levels are used to customize and configure transaction codes for a resort or organization.
-
-#### Hierarchical Structure
-
-The `Payload.json` is organized hierarchically into Groups, Categories, and Itemizers, each level allowing for specific options that can modify the behavior and attributes of transaction codes.
-
-1. **Groups**: The top-level classification, defining broad categories of transactions.
-2. **Categories**: Nested within Groups, providing more specific classifications and attributes.
-3. **Itemizers**: The most granular level, specifying particular items within a category.
-
-### Options Overview
-
-Below is a breakdown of the available options at each hierarchical level.
-
-#### 1. Group Options
-
-Groups are defined under the `groups` key in `Payload.json`. Each group can have the following options:
-
-- **tc_transaction_type**: Defines the type of transaction (e.g., "C" for charge, "FC" for financial charge).
-- **trx_code_type**: Specifies the code type (e.g., "L" for ledger, "F" for food).
-- **tax_code_no**: Associates a specific tax code number with the group.
-- **tax_inclusive_yn**: Indicates whether the transaction is tax inclusive ("Y" for yes, "N" for no).
-- **result_included_in_sum_array**: Controls inclusion in sum arrays (e.g., "111").
-- **ind_revenue_gp**: Indicates if the group is part of the revenue group ("Y" or "N").
-- **include_in_deposit_rule_yn**: Specifies inclusion in deposit rules ("Y" or "N").
-
-**Example**:
-
-```json
-{
-  "code": "ACC",
-  "description": "Accommodation",
-  "seq": 10,
-  "options": {
-    "tc_transaction_type": "C",
-    "trx_code_type": "L",
-    "tax_inclusive_yn": "N",
-    "result_included_in_sum_array": "111",
-    "ind_revenue_gp": "Y",
-    "include_in_deposit_rule_yn": "Y"
-  }
-}
-```
-
-#### 2. Category Options
-
-Categories are defined under the `categories` key and provide specific attributes for transaction codes within a group. Options include:
-
-- **is_manual_post_allowed**: Determines if manual posting is allowed ("Y" or "N").
-- **ind_revenue_gp**: Indicates revenue group inclusion ("Y" or "N").
-- **percentage**: Specifies the percentage value for calculations (if applicable).
-- **percentage_base_code**: Defines the base code for percentage calculations.
-- **calculation_sequence**: The sequence order for applying calculations.
-- **tax_code_no**: Specifies a tax code number (used in tax-related categories).
-
-**Example**:
-
-```json
-{
-  "code": "RV",
-  "description": "Revenue",
-  "seq": 0,
-  "options": {
-    "is_manual_post_allowed": "N",
-    "ind_revenue_gp": "Y"
-  },
-  "itemized": true
-}
-```
-
-#### 3. Itemizer Options
-
-Itemizers are the most detailed level, specifying individual items within a category. They are defined under `itemizers` and can include:
-
-- **ccType**: Credit card type (e.g., "M" for MasterCard).
-- **ccCode**: Code associated with the credit card type.
-- **isPaid**: Indicates if the itemizer is paid ("Y" or "N").
-
-**Example**:
-
-```json
-{
-  "itemizer": 1,
-  "description": "Visa Card",
-  "options": { "ccType": "M", "ccCode": "VA" }
-}
-```
-
-### Usage Instructions
-
-To generate transaction codes using the `Payload.json`:
-
-1. **Load Data**: Parse the `Payload.json` file to extract groups, categories, and itemizers.
-2. **Apply Options**: Use the extracted options to modify the attributes and behavior of transaction codes at each level.
-3. **Generate Codes**: Create transaction codes using the hierarchical data, ensuring that options are correctly applied to reflect the desired configurations.
-4. **Export**: Output the generated transaction codes into SQL scripts or other formats for use in your database or system.
-
-### Conclusion
-
-The hierarchical structure and options provided in the `Payload.json` file offer a flexible and detailed method for configuring transaction codes. By understanding and utilizing these options, you can tailor transaction behavior and attributes to meet specific business requirements.
+These options represent various attributes of a transaction code, such as its type, whether it is cash-based, whether it is included in revenue or billing, and tax-related settings. the option name is same as the transaction code table colomn name so its pretty much the same.
