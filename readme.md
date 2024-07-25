@@ -100,8 +100,7 @@ The `Payload` file is structured to include various data elements necessary for 
     "description": "Revenue",
     "abbr": "",
     "seq": 0,
-    "options": {...},
-    "itemized": true
+    "options": {...}
   }
   ```
 
@@ -116,13 +115,14 @@ The `Payload` file is structured to include various data elements necessary for 
   - **identifiers**: Identifiers associated with the sequence.
   - **categories**:
 
-    - **code**: Categories linked with the sequence
-    - **role**: specifying their role (e.g., "generate", "multiply", "others").
-      - **generate**: a single transaction code will be created and attached to mutliplier type as generate.
-      - **multiply**: itemizers will be mutliplied by this category.
-      - **others**: a single transaction code will be created for this category.
-        > [!IMPORTANT]
-        > generate need to be define first before any thing else, and also in order of the generate eg: SVC first than GST
+        - **code**: Categories linked with the sequence
+        - **role**: specifying their role (e.g., "generate", "multiply", "others").
+          - **generate**: a single transaction code will be created and attached to mutliplier type as generate.
+          - **multiply**: itemizers will be mutliplied by this category.
+          - **others**: a single transaction code will be created for this category.
+
+    > [!IMPORTANT]
+    > generate need to be define first before any thing else, and also in order of the generate eg: SVC first than GST
 
   - **itemizers**: Specific items within the category, including their descriptions and options.
     - **itemizer**: Itemizer number which will be reflexted as the last two digit of the transcansaction code,
