@@ -1,7 +1,7 @@
-from src.create import create_tc_group, create_tc_subgroup, create_tc_code, create_categories, create_tc_generate
-from src.export import export_to_sql, export_to_json_file
+from .create import create_tc_group, create_tc_subgroup, create_tc_code, create_categories, create_tc_generate
+from .export import export_to_sql, export_to_json_file
 
-def generate(data):
+def generate_tc_script(data):
 
     # Extract data from JSON
     RESORT = data["resort"]

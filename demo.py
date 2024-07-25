@@ -1,9 +1,9 @@
 import json
-from opera_tc_codes import generate
+from src.opera import generate_tc_script
 
 # Load the JSON payload
 with open("payload.json", 'r') as file:
     data = json.load(file)
 
 # Generate the file
-generate(data)
+generate_tc_script(data)
