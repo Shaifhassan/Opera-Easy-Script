@@ -1,6 +1,6 @@
 import json
 from src.create import create_tc_group, create_tc_subgroup, create_tc_code, create_categories, create_tc_generate
-from src.export import export_to_sql
+from src.export import export_to_sql, export_to_json_file
 
 
 # Load the JSON payload
@@ -77,5 +77,15 @@ for sequence in SEQUENCES:
 
 
 # Usage example
-file_path = "trx_import.sql"
-export_to_sql(file_path, RESORT, TC_GROUPS.values(), TC_SUBGROUPS.values(), TC_CODES.values())
+# file_path = "trx_import.sql"
+# export_to_sql(file_path, RESORT, TC_GROUPS.values(), TC_SUBGROUPS.values(), TC_CODES.values())
+
+
+# Export transaction code groups
+# export_to_json_file(TC_GROUPS, 'tc_groups.json')
+
+# Export transaction code subgroups
+# export_to_json_file(TC_SUBGROUPS, 'tc_subgroups.json')
+
+# Export transaction codes
+export_to_json_file(TC_CODES, 'tc_codes.json')

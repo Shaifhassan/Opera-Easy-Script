@@ -10,7 +10,7 @@ def create_tc_group(group):
     """
     # Define allowed options for the group
     tc_option_template = {
-        "tc_transaction_type": None
+        "tc_transaction_type": "FC"
     }
 
     # Get options defined for the group model and merge valid options
@@ -50,7 +50,7 @@ def create_tc_subgroup(groups, sequence, category):
 
     # Define allowed options for the subgroup
     tc_option_template = {
-        "tc_transaction_type": None
+        "tc_transaction_type": "FC"
     }
 
     # Merge valid options from the group
@@ -87,20 +87,21 @@ def create_tc_code(sequence, tc_subgroup, group, category, identifier, itemizer,
     """
     # Define allowed options for the transaction code
     tc_option_template = {
-        "trx_code_type": None,
+        "trx_code_type": "FC",
         "tax_code_no": None,
-        "tax_inclusive_yn": None,
+        "tax_inclusive_yn": "N",
         "result_included_in_sum_array": None,
         "cc_type": None,
         "cc_code": None,
-        "ind_cash": None,
-        "is_manual_post_allowed": None,
-        "ind_billing": None,
-        "ind_ar": None,
-        "ind_revenue_gp": None,
-        "ind_deposit_yn": None,
-        "inh_deposit_yn": None,
-        "include_in_deposit_rule_yn": None,
+        "ind_cash": "N",
+        "is_manual_post_allowed": "N",
+        "trx_code_display": None,
+        "ind_billing": "N",
+        "ind_ar": "N",
+        "ind_revenue_gp": "N",
+        "ind_deposit_yn": "N",
+        "inh_deposit_yn": "N",
+        "include_in_deposit_rule_yn": "N",
         "adj_trx_code": None
     }
 

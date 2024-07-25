@@ -134,8 +134,7 @@
         "options": {
           "is_manual_post_allowed": "N",
           "ind_revenue_gp": "Y"
-        },
-        "itemized": true
+        }
       },
       {
         "code": "NR",
@@ -145,8 +144,7 @@
         "options": {
           "is_manual_post_allowed": "N",
           "ind_revenue_gp": "N"
-        },
-        "itemized": true
+        }
       },
       {
         "code": "DC",
@@ -156,8 +154,7 @@
         "options": {
           "is_manual_post_allowed": "N",
           "ind_revenue_gp": "Y"
-        },
-        "itemized": true
+        }
       },
       {
         "code": "RB",
@@ -167,8 +164,7 @@
         "options": {
           "is_manual_post_allowed": "Y",
           "ind_revenue_gp": "Y"
-        },
-        "itemized": true
+        }
       },
       {
         "code": "SC",
@@ -235,8 +231,7 @@
           "ind_billing": "Y",
           "ind_ar": "N",
           "ind_deposit_yn": "Y"
-        },
-        "itemized": true
+        }
       },
       {
         "code": "CL",
@@ -249,8 +244,7 @@
           "ind_billing": "Y",
           "ind_ar": "N",
           "ind_deposit_yn": "Y"
-        },
-        "itemized": true
+        }
       },
       {
         "code": "PD",
@@ -263,8 +257,7 @@
           "ind_billing": "Y",
           "ind_ar": "N",
           "ind_deposit_yn": "Y"
-        },
-        "itemized": true
+        }
       },
       {
         "code": "OP",
@@ -272,13 +265,11 @@
         "defaultGroup": "PAY",
         "abbr": "",
         "seq": 0,
-        "isRevenue": "N",
-        "isManual": "Y",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "Y",
-        "isPaid": "N",
-        "itemized": true
+        "options": {
+          "ind_billing": "N",
+          "ind_ar": "N",
+          "ind_deposit_yn": "N"
+        }
       },
       {
         "code": "CC",
@@ -286,41 +277,25 @@
         "defaultGroup": "PAY",
         "abbr": "",
         "seq": 0,
-        "isRevenue": "N",
-        "isManual": "Y",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "N",
-        "itemized": true
+        "options": {
+          "ind_billing": "Y",
+          "ind_ar": "N",
+          "ind_deposit_yn": "Y"
+        }
       },
       {
         "code": "SR",
         "description": "System Revenue",
         "defaultGroup": "SSR",
         "abbr": "",
-        "seq": 0,
-        "isRevenue": "N",
-        "isManual": "N",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "N",
-        "itemized": true
+        "seq": 0
       },
       {
         "code": "SP",
         "description": "System Payment",
         "defaultGroup": "SSP",
         "abbr": "",
-        "seq": 0,
-        "isRevenue": "N",
-        "isManual": "N",
-        "isCash": "N",
-        "isDeposit": "N",
-        "isAr": "N",
-        "isPaid": "N",
-        "itemized": true
+        "seq": 0
       }
     ]
   },
@@ -376,7 +351,13 @@
       "group": "PAY",
       "categories": [{ "code": "CA", "role": "multiply" }],
       "identifiers": [0],
-      "itemizers": [{ "itemizer": 0, "description": "Cash" }]
+      "itemizers": [
+        {
+          "itemizer": 0,
+          "description": "Cash",
+          "options": { "trx_code_display": "CA" }
+        }
+      ]
     },
     {
       "sequence": 90,
@@ -417,27 +398,27 @@
         {
           "itemizer": 1,
           "description": "Credit Cards Transfer to AR",
-          "options": { "isPaid": "N" }
+          "options": { "ind_cash": "N" }
         },
         {
           "itemizer": 2,
           "description": "Cash Drop Transaction Code",
-          "options": { "isPaid": "Y" }
+          "options": { "ind_cash": "Y" }
         },
         {
           "itemizer": 5,
           "description": "Check Drop Transaction Code",
-          "options": { "isPaid": "Y" }
+          "options": { "ind_cash": "Y" }
         },
         {
           "itemizer": 3,
           "description": "Paid Out - Check Exchange",
-          "options": { "isPaid": "Y" }
+          "options": { "ind_cash": "Y" }
         },
         {
           "itemizer": 4,
           "description": "Paid Out - Currency Exchange",
-          "options": { "isPaid": "Y" }
+          "options": { "ind_cash": "Y" }
         }
       ]
     }

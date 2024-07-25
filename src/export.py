@@ -1,5 +1,7 @@
 
-from query import export_tc_groups, export_tc_subgroups, export_tc_codes,export_tc_generates
+import json
+from .query import export_tc_groups, export_tc_subgroups, export_tc_codes,export_tc_generates
+
 
 def export_to_sql(file_path, resort, tc_groups, tc_subgroups, tc_codes):
     """
@@ -58,3 +60,17 @@ COMPANY : XKYERON
         # Finalize file with a termination symbol
         file.write("/")
 
+
+
+
+def export_to_json_file(data, file_path):
+    """
+    Exports a collection to a JSON file with indentation.
+
+    Args:
+        data (dict): The collection to be exported.
+        file_path (str): The path to the output JSON file.
+    """
+    with open(file_path, 'w') as json_file:
+        json.dump(data, json_file, indent=4)
+    print(f"Data successfully exported to {file_path}")
