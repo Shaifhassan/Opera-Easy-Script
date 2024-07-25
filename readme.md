@@ -4,7 +4,7 @@
 
 This guide explains how to use the `opera.py` module to generate a list of transaction codes import scripts for a given resort. This script outputs transaction code groups, subgroups, transaction codes. The output is typically a set of SQL scripts to insert the generated transaction codes into opera database.
 
-The Following script generate transaction code based on Transaction code template defined in [Transaction Code Standard](/docs/Transaction%20Code%20Standard.md) although this can be customized
+The Following script generate transaction code based on Transaction code template defined in [Transaction Code Standard](/docs/docs/Transaction%20Code%20Standard.md) although this can be customized
 
 #### Get Started
 
