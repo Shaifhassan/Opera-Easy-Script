@@ -126,6 +126,45 @@ def export_tc_codes(resort, tc_codes):
     export_data(base_model, tc_codes, "tc_codes_import.sql", "TRX$_CODES")
 
 
+def export_tc_generates(resort, tc_codes):
+
+    base_model = {
+        "id": "trx_class_relationship_id.nextval",
+        "resort": resort,
+        "tc_group": None,
+        "tc_subgroup":None,
+        "trx_code":None,
+        "tc_group_generator":None,
+        "tc_subgroup_generator":None,
+        "trx_code_generator":None,
+        "tcl_code_generator":None,
+        "tcr_type":"A",
+        "amount":None,
+        "percentage":None,
+        "percentage_base_code":None,
+        "udf_function":None,
+        "calculation_sequence":None,
+        "amount_from_schedule_yn":"N",
+        "currency":None,
+        "result_included_in_sum_array":None,
+        "generated_printed_on_folio_yn":None,
+        "name_tax_type":None,
+        "udf_inverse":None,
+        "stop_days":None,
+        "adjustment_type":"N",
+        "use_tax_bracket_yn":"N",
+        "insert_user":2,
+        "insert_date":"SYSDATE",
+        "update_user":2,
+        "update_date":"SYSDATE",
+    }
+
+    for tc in tc_codes:
+        if tc["generates"]:
+            for gen in tc["generates"]:
+                export_data(base_model, gen, "tc_generates_import.sql", "TRX_CLASS_RELATIONSHIPS")
+
+
 def update_model(base, updates):
     model = base.copy()  # Copy the base model to avoid modifying the original
     patch_model = {k: v for k, v in updates.items() if k in model and v is not None} 

@@ -161,3 +161,30 @@ def create_categories(categories, sequence):
         category["role"] = cat.get("role", "")
         _categories.append(category)
     return _categories
+
+
+def create_tc_generate(category, trx_code):
+
+    tax_option_template = {
+        "amount":None,
+        "percentage":None,
+        "percentage_base_code":None,
+        "udf_function":None,
+        "calculation_sequence":None,
+        "result_included_in_sum_array":None
+    }
+
+    # Merge valid options from the category (Level 2)
+    category_options = category.get("options", {})
+    tax_category_options = {k: v for k, v in category_options.items() if k in tax_option_template and v is not None}
+    tax_option_template.update(tax_category_options)
+
+    # create generate record
+    generate = {
+        "tc_group": trx_code["tc_group"],
+        "tc_subgroup":trx_code["tc_subgroup"],
+        "trx_code":trx_code["trx_code"]
+    }
+
+    generate.update(tax_category_options)
+    return generate

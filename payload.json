@@ -135,8 +135,7 @@
           "is_manual_post_allowed": "N",
           "ind_revenue_gp": "Y"
         },
-        "itemized": true,
-        "tax": null
+        "itemized": true
       },
       {
         "code": "NR",
@@ -147,8 +146,7 @@
           "is_manual_post_allowed": "N",
           "ind_revenue_gp": "N"
         },
-        "itemized": true,
-        "tax": null
+        "itemized": true
       },
       {
         "code": "DC",
@@ -159,8 +157,7 @@
           "is_manual_post_allowed": "N",
           "ind_revenue_gp": "Y"
         },
-        "itemized": true,
-        "tax": null
+        "itemized": true
       },
       {
         "code": "RB",
@@ -171,8 +168,7 @@
           "is_manual_post_allowed": "Y",
           "ind_revenue_gp": "Y"
         },
-        "itemized": true,
-        "tax": null
+        "itemized": true
       },
       {
         "code": "SC",
@@ -181,10 +177,13 @@
         "abbr": "",
         "seq": 70,
         "options": {
-          "is_manual_post_allowed": "N"
+          "is_manual_post_allowed": "N",
+          "percentage": 10,
+          "percentage_base_code": 0,
+          "calculation_sequence": 1,
+          "result_included_in_sum_array": "100"
         },
-        "itemized": false,
-        "tax": { "no": 1, "percent": 10, "base": "0", "addTo": "100" }
+        "itemized": false
       },
       {
         "code": "TX",
@@ -193,10 +192,13 @@
         "abbr": "",
         "seq": 80,
         "options": {
-          "is_manual_post_allowed": "N"
+          "is_manual_post_allowed": "N",
+          "percentage": 16,
+          "percentage_base_code": 1,
+          "calculation_sequence": 2,
+          "result_included_in_sum_array": "000"
         },
-        "itemized": false,
-        "tax": { "no": 2, "percent": 16, "base": "1", "addTo": "000" }
+        "itemized": false
       },
       {
         "code": "GT",
@@ -205,10 +207,10 @@
         "abbr": "",
         "seq": 88,
         "options": {
-          "is_manual_post_allowed": "N"
+          "is_manual_post_allowed": "N",
+          "tax_code_no": 3
         },
-        "itemized": false,
-        "tax": { "no": 3, "amount": null, "base": null, "addTo": null }
+        "itemized": false
       },
       {
         "code": "TP",
@@ -220,8 +222,7 @@
           "is_manual_post_allowed": "Y",
           "ind_revenue_gp": "Y"
         },
-        "itemized": false,
-        "tax": null
+        "itemized": false
       },
       {
         "code": "CA",
@@ -235,8 +236,7 @@
           "ind_ar": "N",
           "ind_deposit_yn": "Y"
         },
-        "itemized": true,
-        "tax": null
+        "itemized": true
       },
       {
         "code": "CL",
@@ -250,8 +250,7 @@
           "ind_ar": "N",
           "ind_deposit_yn": "Y"
         },
-        "itemized": true,
-        "tax": null
+        "itemized": true
       },
       {
         "code": "PD",
@@ -265,8 +264,7 @@
           "ind_ar": "N",
           "ind_deposit_yn": "Y"
         },
-        "itemized": true,
-        "tax": null
+        "itemized": true
       },
       {
         "code": "OP",
@@ -280,8 +278,7 @@
         "isDeposit": "N",
         "isAr": "Y",
         "isPaid": "N",
-        "itemized": true,
-        "tax": null
+        "itemized": true
       },
       {
         "code": "CC",
@@ -295,8 +292,7 @@
         "isDeposit": "N",
         "isAr": "N",
         "isPaid": "N",
-        "itemized": true,
-        "tax": null
+        "itemized": true
       },
       {
         "code": "SR",
@@ -310,8 +306,7 @@
         "isDeposit": "N",
         "isAr": "N",
         "isPaid": "N",
-        "itemized": true,
-        "tax": null
+        "itemized": true
       },
       {
         "code": "SP",
@@ -325,8 +320,7 @@
         "isDeposit": "N",
         "isAr": "N",
         "isPaid": "N",
-        "itemized": true,
-        "tax": null
+        "itemized": true
       }
     ]
   },

@@ -1,5 +1,5 @@
 import json
-from src.create import create_tc_group, create_tc_subgroup, create_tc_code, create_categories
+from src.create import create_tc_group, create_tc_subgroup, create_tc_code, create_categories, create_tc_generate
 from src.export import export_tc_groups, export_tc_subgroups, export_tc_codes
 
 
@@ -52,15 +52,18 @@ for sequence in SEQUENCES:
                 # Loop through list itemizers attached to the sequence
                 for itemizer in sequence["itemizers"]:
                     tc_code = create_tc_code(sequence, tc_subgroup, tc_code, category, identifier, itemizer, itemizer["description"])
-                    tc_code["generates"] = generates
+                    tc_code["generates"] = generates.copy()
+
+                    for gen in tc_code["generates"]:
+                        gen["tc_group_generator"] = tc_code["tc_group"]
+                        gen["tc_subgroup_generator"] = tc_code["tc_subgroup"]
+                        gen["trx_code_generator"] = tc_code["trx_code"]
+
                     TC_CODES.append(tc_code)
             elif role == "generate":
                 tc_code = GROUPS.get(category["defaultGroup"], None)
                 tc_code = create_tc_code(sequence, tc_subgroup, tc_code, category, identifier, None, category["description"])
-                generate = category["tax"]
-                generate["trx_code"] = tc_code["trx_code"]
-                generate["tc_subgroup"] = tc_code["tc_subgroup"]
-                generate["tc_group"] = tc_code["tc_group"]
+                generate = create_tc_generate(category, tc_code)  
                 generates.append(generate)
                 TC_CODES.append(tc_code)
             else:
