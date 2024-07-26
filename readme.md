@@ -26,6 +26,8 @@ generate_tc_script(data, "demo/trx_code.json")
 
 The `Payload` file is structured to include various data elements necessary for generating transaction codes. Below is a breakdown of the key sections:
 
+[Sample Payload](/demo/payload.json)
+
 ```json
 {
   "Resort": "",

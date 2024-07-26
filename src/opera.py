@@ -74,7 +74,7 @@ def generate_tc_script(data, output_path):
 
     # Usage example
     # file_path = "trx_import.sql"
-    # export_to_sql(file_path, RESORT, TC_GROUPS.values(), TC_SUBGROUPS.values(), TC_CODES.values())
+    export_to_sql(output_path, RESORT, TC_GROUPS.values(), TC_SUBGROUPS.values(), TC_CODES.values())
 
 
     # Export transaction code groups
@@ -84,4 +84,4 @@ def generate_tc_script(data, output_path):
     # export_to_json_file(TC_SUBGROUPS, 'tc_subgroups.json')
 
     # Export transaction codes
-    export_to_json_file(TC_CODES, output_path)
+    #export_to_json_file(TC_CODES, output_path)
