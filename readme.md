@@ -18,7 +18,7 @@ with open("payload.json", 'r') as file:
     data = json.load(file)
 
 # passthe payload data to the opera.generate_tc_script
-generate_tc_script(data, "demo/trx_code.json")
+generate_tc_script(data, "demo/trx_code.sql")
 
 ```
 
