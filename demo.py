@@ -5,5 +5,7 @@ from src.opera import generate_tc_script
 with open("demo/payload.json", 'r') as file:
     data = json.load(file)
 
+print(data)
+
 # Generate the file
 generate_tc_script(data, "demo/trx_code.sql")

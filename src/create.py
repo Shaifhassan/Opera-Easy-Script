@@ -120,7 +120,16 @@ def create_tc_code(sequence, tc_subgroup, group, category, identifier, itemizer,
         item_code = category.get("seq", 0)
 
     trx_code_no = f'{item_code:02}'
-    trx_description = f"{sequence['name'] if sequence['prefix'] else ''}{f' {identifier['name']}' if identifier['name'] else ''}{f' {description}' if description else ''}{f' {category['abbr']}' if category['abbr'] else ''}"
+
+    parts = [
+        sequence['name'] if sequence['prefix'] else '',
+        identifier['name'] if identifier['name'] else '',
+        description if description else '',
+        category['abbr'] if category['abbr'] else ''
+    ]
+
+    trx_description = ' '.join(filter(None, parts))
+
     # Initialize the transaction code model with basic information and merged options
     trx_code = {
         "trx_code": f'{sequence.get("sequence", "00")}{identifier.get("seq", "00")}{trx_code_no}',
